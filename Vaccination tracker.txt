@@ -1,0 +1,120 @@
+
+#include <stdio.h>
+
+#define MAX 50
+
+int main()
+{
+    char name[MAX][50];
+    char dob[MAX][15];
+    int dose[MAX][5] = {0};
+    int count = 0;
+    int choice, sno, d, i, j, total;
+
+    do
+    {
+        printf("\n===== VACCINATION RECORD TRACKER =====\n");
+        printf("1. Add Child\n");
+        printf("2. Mark Vaccination Dose\n");
+        printf("3. View All Children\n");
+        printf("4. Exit\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice)
+        {
+            case 1:
+                if(count >= MAX)
+                {
+                    printf("Record array is full!\n");
+                }
+                else
+                {
+                    printf("Enter child's name: ");
+                    scanf(" %49[^\n]", name[count]);
+
+                    printf("Enter date of birth (DD-MM-YYYY): ");
+                    scanf("%14s", dob[count]);
+
+                    for(i = 0; i < 5; i++)
+                    {
+                        dose[count][i] = 0;
+                    }
+
+                    count++;
+
+                    printf("Child added successfully!\n");
+                    printf("Serial Number: %d\n", count);
+                }
+                break;
+
+            case 2:
+                printf("Enter child's S.No: ");
+                scanf("%d", &sno);
+
+                if(sno < 1 || sno > count)
+                {
+                    printf("Invalid Serial Number!\n");
+                }
+                else
+                {
+                    printf("Enter dose number (1-5): ");
+                    scanf("%d", &d);
+
+                    if(d < 1 || d > 5)
+                    {
+                        printf("Invalid dose number!\n");
+                    }
+                    else if(dose[sno - 1][d - 1] == 1)
+                    {
+                        printf("This dose is already marked given.\n");
+                    }
+                    else
+                    {
+                        dose[sno - 1][d - 1] = 1;
+                        printf("Dose marked as given successfully!\n");
+                    }
+                }
+                break;
+
+            case 3:
+                if(count == 0)
+                {
+                    printf("No child records available.\n");
+                }
+                else
+                {
+                    printf("\n===== CHILD RECORDS =====\n");
+                    printf("S.No  Name                 DOB          Doses\n");
+
+                    for(i = 0; i < count; i++)
+                    {
+                        total = 0;
+
+                        for(j = 0; j < 5; j++)
+                        {
+                            if(dose[i][j] == 1)
+                            {
+                                total++;
+                            }
+                        }
+
+                        printf("%-5d %-20s %-12s %d/5\n",
+                               i + 1, name[i], dob[i], total);
+                    }
+                }
+                break;
+
+            case 4:
+                printf("Exiting program. Thank you!\n");
+                break;
+
+            default:
+                printf("Invalid choice! Try again.\n");
+        }
+
+    } while(choice != 4);
+
+    return 0;
+}
